@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private static final Role DEFAULT_ROLE = Role.USER;
+
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
@@ -43,12 +45,11 @@ public class AuthServiceImpl implements AuthService {
                 .fullName(request.getFullName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(DEFAULT_ROLE)
                 .build();
 
         User savedUser = userRepository.save(user);
 
-        
         Cart cart = Cart.builder()
                 .user(savedUser)
                 .build();
