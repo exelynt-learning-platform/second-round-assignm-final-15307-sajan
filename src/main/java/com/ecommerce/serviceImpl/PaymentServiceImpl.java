@@ -27,6 +27,8 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
+    private static final String CURRENCY = "INR";
+
     private final RazorpayClient razorpayClient;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -64,7 +66,7 @@ public class PaymentServiceImpl implements PaymentService {
 
             JSONObject orderRequest = new JSONObject();
             orderRequest.put("amount", amountInPaise);
-            orderRequest.put("currency", "INR");
+            orderRequest.put("currency", CURRENCY);
             orderRequest.put("receipt", "order_receipt_" + order.getId());
 
             JSONObject notes = new JSONObject();
@@ -81,7 +83,7 @@ public class PaymentServiceImpl implements PaymentService {
             return PaymentResponseDto.builder()
                     .razorpayOrderId(razorpayOrder.get("id"))
                     .amount(order.getTotalPrice())
-                    .currency("INR")
+                    .currency(CURRENCY)
                     .key(razorpayKeyId)
                     .build();
 
